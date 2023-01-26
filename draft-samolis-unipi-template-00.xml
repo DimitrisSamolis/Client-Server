@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+     which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+
+<?rfc strict="no" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes"?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="no"?>
+<!-- Start each main section on a new page -->
+<?rfc subcompact="no"?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc category="info" docName="draft-samolis-unipi-project-00" ipr="trust200902">
+
+  <!-- ***** FRONT MATTER ***** -->
+  <front>
+
+    <title>Semester project for 2022</title>
+
+	<author fullname="Dimitrios Samolis" initials="D.S." surname="Samolis">
+			<organization>University of Piraeus</organization>
+			<address>
+				<postal>
+					<street>Department of Digital Systems</street>
+					<city>Piraeus</city>
+					<region/>
+					<code>18534</code>
+					<country>Greece</country>
+				</postal>
+				<email>dimitrissamolis2001@gmail.com</email>
+			</address>
+		</author>
+
+
+    <date year="2022" />
+
+    <area>Edu</area>
+
+    <workgroup>Education</workgroup>
+
+    <keyword>Edu</keyword>
+    <keyword>Project</keyword>
+
+    <abstract>
+      <t>The purpose of this document is to describe our project in the Internet Protocols subject.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+	<t>The purpose of this document is simple. To describe my own Protocol that I have created. This Protocol is based on Server-Client connection
+    and it can calculate 2 numbers from the Client side and appear the total. Also, we have made this Protocol Multi-Client which means that one Server
+    can connect with many Clients (max=5). </t>
+    <t>This document follows the keyword use as specified in <xref target="RFC2119">RFC2119</xref>.</t>
+
+    <t>This document uses the following terms:
+	<list style="hanging">
+    <t>Protocol - A pre-approved communication language between two end systems.</t>
+    <t>Server - The part of the communication protocol that receives the request. In this project the server is an endpoint for calculator.</t>
+    <t>Client - The part of the communication protocol that starts the request. In this project the client has to insert two numbers and a calculating method.</t>
+    <t>byte - An 8-bit octet</t>
+  </list></t>
+
+  <section title="Requirements Language">
+    <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+  "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+  document are to be interpreted as described in <xref target="RFC2119" format="default">RFC2119</xref>.</t>
+  </section>
+
+    </section>
+	
+	<section  title="What messages are included">
+    <t>1.First of all, Server sends a message when it is ready to receive attributes.</t>
+    <t>2.Then, when a client joins the Server it sends a message with the port and the IP address and also in which thread it is because a server connects
+    in many threads.</t>
+    <t>3.When the connection is succed Client gets a message to input 2 numbers and the calculating method that is prefered.</t>
+    <t>4.Finally, it returns the total of the calculation to the Server and the connection shuts down for this Client.</t>
+
+     <t><xref target="Exchange" /></t>
+    <figure title="Message Exchange" anchor="Exchange"> <artwork align="center"><![CDATA[
+              Server                            Client
+              |                                  |
+              |             Ready(1)             |
+              | -------------------------------> |
+              |                                  |
+              |            Connects              |
+              | <------------------------------- |
+              |                                  |
+              |               (2)                |
+              | -------------------------------> |
+              |                                  |
+              |               (3)                |
+              | <------------------------------- |
+              |                                  |
+              |               (4)                |
+              | -------------------------------> |
+              |                                  |
+
+]]></artwork></figure>
+    </section>
+
+	<section  title="What are the header's fields">
+
+	<section anchor="Headers" title="Protocol Header Format" >
+	
+  <section title="First header">
+    <t>This is the first message sent by the Client to initiate the communication process... </t>
+    <t>The following figure shows the message format.</t>
+    <figure title="A Header Format" anchor="RSHF"> <artwork align="center"><![CDATA[
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |        Message Type           |           Length              |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                               ID                              |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |        Number 1               |           Number2             |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                      Calculating Method                       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   
+      ]]></artwork></figure>
+    <t>
+      <list style="symbols">
+        <t>Message Type - 16 bits unsigned integer: The message type. For this message, the message type MUST be 0.</t>
+        <t>Number1,Number2,calculatingMethod - 2 bits unsigned short integer.</t>
+        <t>Length - 16 bits unsigned integer. The value for this message MUST be 8.</t>
+        <t> ID- transaction ID.</t>
+      </list>
+    </t>
+  </section>
+  	
+  <section title="Second header">
+    <t>This is the message sent by the Server to send back the total of the calculation... </t>
+    <t>The following figure shows the message format.</t>
+    <figure title="A Header Format" anchor="RSH"> <artwork align="center"><![CDATA[
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |        Message Type           |           Final               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                               ID                              |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   
+      ]]></artwork></figure>
+    <t>
+      <list style="symbols">
+        <t>Message Type - 16 bits unsigned integer: The message type. For this message, the message type MUST be 0.</t>
+        <t>Final - 2 bits unsigned short integer: The outcome of the calculation</t>
+        <t> ID- transaction ID.</t>
+      </list>
+    </t>
+  </section>
+  </section>
+  </section>
+
+  <section title="Server's Port">
+    <t>The server receive messages at port 12345</t>
+  </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This memo makes no requests to IANA.</t>
+     
+
+    </section>
+    <section anchor="Security" title="Security Considerations">
+      <t>There is no security in this specification. This is a prototype and all messages should be sent in cleartext over the wire.</t>
+      <t>This is a VERY unsecure protocol. Please do not implement.</t>
+    </section>
+  </middle>
+  <!--  *****BACK MATTER ***** -->
+  <back>
+     <references title="Informative References">
+      &RFC2119;
+    </references>
+  </back>
+  
+</rfc>
